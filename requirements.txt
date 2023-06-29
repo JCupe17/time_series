@@ -1,0 +1,8 @@
+pandas
+numpy
+scikit-learn
+geopandas
+geodatasets
+folium
+jupyterlab
+matplotlib
