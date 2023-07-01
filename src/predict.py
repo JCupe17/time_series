@@ -16,7 +16,7 @@ def forecast(model, df: pd.DataFrame) -> pd.Series:
 def predict():
     # 1. Load dataset
     logging.info("Loading data for prediction ...")
-    test_df = pd.read_csv("test_data_scientist/test.csv.gz", compression="gzip", parse_dates=["day_id"])
+    test_df = pd.read_csv("data/test.csv.gz", compression="gzip", parse_dates=["day_id"])
 
     # 2. Preprocessing
     logging.info("Preprocessing data for prediction ...")
@@ -29,7 +29,7 @@ def predict():
         # Load the model
         model_path = f"models/{ts}.pkl"
         if os.path.exists(model_path):
-            with open(model_path, "r") as f:
+            with open(model_path, "rb") as f:
                 _, results = pickle.load(f)
         
             # Prepare the dataset
