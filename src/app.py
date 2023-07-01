@@ -5,7 +5,7 @@ from src.utils import load_dataset
 
 app = Flask(__name__)
 
-@app.route("/query", methods=['POST'])
+@app.route("/query")
 def query():
     # if key doesn't exist, returns None
     but_num = request.args.get('but_num')
@@ -16,10 +16,9 @@ def query():
     if but_num is not None and dpt_num is not None:
         df = df[(df["but_num_business_unit"] == int(but_num)) &
                 (df["dpt_num_department"] == int(dpt_num))]
-    
         return jsonify(df[["day_id", "predicted_turnover"]].to_dict('records'))
 
-    return f"Test DPT {dpt_num} BU {but_num}"
+    return f"No arguments for a given store-department tuple. Please use the arguments but_num and dpt_num."
 
 
 if __name__ == '__main__':
