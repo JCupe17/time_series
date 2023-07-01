@@ -5,6 +5,7 @@ import pickle
 import logging
 
 from src.preprocessing import preprocessing
+from src.utils import load_dataset
 
 
 def forecast(model, df: pd.DataFrame) -> pd.Series:
@@ -16,7 +17,7 @@ def forecast(model, df: pd.DataFrame) -> pd.Series:
 def predict():
     # 1. Load dataset
     logging.info("Loading data for prediction ...")
-    test_df = pd.read_csv("data/test.csv.gz", compression="gzip", parse_dates=["day_id"])
+    test_df = load_dataset(folder="data", filename="test.csv.gz", dates_columns=["day_id"])
 
     # 2. Preprocessing
     logging.info("Preprocessing data for prediction ...")
@@ -35,12 +36,13 @@ def predict():
             # Prepare the dataset
             df = test_df[test_df["time_series"] == ts]
             df = forecast(results, df)
+            df = df.reset_index()
 
             pred_test_df = pd.concat([pred_test_df, df], ignore_index=True)
     
     # 4. Save results
     logging.info("Saving forecasting results ...")
-    pred_test_df.to_csv("data/pred_test_df.csv.gz", compression="gzip", index=False)
+    pred_test_df.to_csv("data/pred_test.csv.gz", compression="gzip", index=False)
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ import statsmodels.api as sm
 from sklearn.metrics import mean_squared_error
 
 from src.preprocessing import preprocessing
+from src.utils import load_dataset
 
 
 def measure_rmse(actual: pd.Series, predicted: pd.Series) -> float:
@@ -41,7 +42,7 @@ def train_sarima(df: pd.DataFrame, model_name: str):
 def main():
     # 1. Load datasets
     logging.info("Loading training data ...")
-    train_df = pd.read_csv("data/train.csv.gz", compression="gzip", parse_dates=["day_id"])
+    train_df = load_dataset(folder="data", filename="train.csv.gz", dates_columns=["day_id"])
 
     # 2. Preprocessing
     logging.info("Preprocessing training data ...")

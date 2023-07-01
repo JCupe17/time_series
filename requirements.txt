@@ -6,3 +6,4 @@ geodatasets
 folium
 jupyterlab
 matplotlib
+flask
