@@ -8,10 +8,9 @@ from src.preprocessing import preprocessing
 from src.utils import load_dataset
 
 
-def forecast(model, df: pd.DataFrame) -> pd.Series:
-    nb_steps = len(df)
-    df["predicted_turnover"] = model.get_forecast(steps=nb_steps).predicted_mean.to_frame()["predicted_mean"]
-    return df
+def forecast(model, nb_steps: int) -> pd.Series:
+    prediction =  model.get_forecast(steps=nb_steps).predicted_mean.to_frame()
+    return prediction
 
 
 def predict():
@@ -35,7 +34,8 @@ def predict():
         
             # Prepare the dataset
             df = test_df[test_df["time_series"] == ts]
-            df = forecast(results, df)
+            pred = forecast(results, len(df))
+            df = pd.concat([df, pred], axis=1)
             df = df.reset_index()
 
             pred_test_df = pd.concat([pred_test_df, df], ignore_index=True)
