@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from tqdm import tqdm
 import pickle
@@ -26,14 +27,16 @@ def predict():
     pred_test_df = pd.DataFrame()
     for ts in tqdm(test_df["time_series"].unique()):
         # Load the model
-        with open(f"models/{ts}.pkl", "r") as f:
-            _, results = pickle.load(f)
+        model_path = f"models/{ts}.pkl"
+        if os.path.exists(model_path):
+            with open(model_path, "r") as f:
+                _, results = pickle.load(f)
         
-        # Prepare the dataset
-        df = test_df[test_df["time_series"] == ts]
-        df = forecast(results, df)
+            # Prepare the dataset
+            df = test_df[test_df["time_series"] == ts]
+            df = forecast(results, df)
 
-        pred_test_df = pd.concat([pred_test_df, df], ignore_index=True)
+            pred_test_df = pd.concat([pred_test_df, df], ignore_index=True)
     
     # 4. Save results
     logging.info("Saving forecasting results ...")
