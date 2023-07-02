@@ -7,3 +7,5 @@ folium
 jupyterlab
 matplotlib
 flask
+tqdm
+statsmodels
