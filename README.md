@@ -76,8 +76,9 @@ Since this repository presents a simple ML algorithm for forecasting without any
 
 * Optimize the hyper-parameters for the SARIMA models.
 * Use another algorithm or another approach to compare different models. For instance, using pycaret could be a good idea to compare different models in a esay way.
-* A limitation with SARIMA is that it uses only one feature. Other approaches could use more than one feature.
-* For new stores or stores that do not have a history, we can use the information for similar stores for the forecasting.
+* A limitation with SARIMA is that it uses only one feature. Other approaches could use more than one feature. For this, we can use other approaches using deep learning models such as LSTM, DeepAR, etc.
+* For new stores or stores that do not have a history, we can use the information for similar stores for the forecasting to avoid cold start.
+* We can use **MLFlow** to monitor and save models to track their performance.
 
 ## Next steps in ML Pipeline
 
