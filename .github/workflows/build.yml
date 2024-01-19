@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
 env:
   GITHUB_TOKEN: dummy_token
@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Set ENV based on branch
         run: |
-          if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master" ]]; then
+          if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "ENV=prod" >> $GITHUB_ENV
           else
             echo "ENV=preprod" >> $GITHUB_ENV
