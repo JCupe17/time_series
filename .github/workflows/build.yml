@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+env:
+  GITHUB_TOKEN: dummy_token
+  GITHUB_USER: dummy_user
+  GITHUB_COMMIT_NAME: ${{ github.event.head }}
+
+jobs:
+  deploy:
+    name: Test conditional steps
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Set ENV based on branch
+        run: |
+          if [[ "${{github.base_ref}}" == "master" || "${{github.ref}}" == "refs/heads/master"]]; then
+            echo "ENV=prod" >> $GITHUB_ENV
+          else
+            echo "ENV=preprod" >> $GITHUB_ENV
+          fi
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: Step for PREPROD
+        if: env.ENV == 'preprod'
+        run: |
+          echo "COMMIT_NAME=${{ github.event.push.after }}"
+          echo "GITHUB_COMMIT_NAME=${{ env.GITHUB_COMMIT_NAME }}"
+          echo "ENV=${{ env.ENV }}"
+      - name: Step for PROD
+        if: env.ENV == 'prod'
+        run: |
+          echo "COMMIT_NAME=${{ github.event.push.after }}"
+          echo "GITHUB_COMMIT_NAME=${{ env.GITHUB_COMMIT_NAME }}"
+          echo "ENV=${{ env.ENV }}"
